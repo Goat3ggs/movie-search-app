@@ -1,3 +1,7 @@
+.container {
+  max-width: 1200px;
+}
+
 /* -- Searchbar Component */
 
 /* container styles */
@@ -90,7 +94,6 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -195,4 +198,35 @@
   100% {
     transform: rotate(1turn);
   }
+}
+
+/* -- Error Component */
+
+/* error container styles */
+.errors-container {
+  color: #c26d6d;
+  background-color: #f9c7c6;
+  border: 1px solid #a63131;
+  border-radius: var(--radius-sm);
+  padding: 0.7rem;
+  margin: 0 auto;
+  margin-top: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.errors-container img {
+  height: 25px;
+  stroke: blue;
+}
+
+/* error meta */
+.error {
+  line-height: var(--line-height-tight);
+}
+
+.error__title {
+  font-weight: 600;
+  color: #d9636c;
 }
