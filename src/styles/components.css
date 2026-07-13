@@ -78,3 +78,18 @@
   opacity: 1;
   visibility: visible;
 }
+
+/* -- MovieList Component */
+.category-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* grid container styles */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
