@@ -1,0 +1,80 @@
+/* -- Searchbar Component */
+
+/* container styles */
+.searchbar-container {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+/* form styles */
+.searchbar {
+  --timing: var(--transition-normal);
+  --width-of-input: 300px;
+  --height-of-input: 44px;
+  --input-bg: var(--color-surface-elevated);
+
+  position: relative;
+  width: 100%;
+  max-width: var(--width-of-input);
+  height: var(--height-of-input);
+  display: flex;
+  align-items: center;
+  padding-inline: var(--space-4);
+  background: var(--input-bg);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+
+  transition:
+    border-color var(--timing),
+    box-shadow var(--timing);
+}
+
+/* input focus styles */
+.searchbar:focus-within {
+  border-color: var(--color-primary);
+  /* Un glow subtil roșu în jurul barei */
+  box-shadow: 0 0 0 2px rgb(229 9 20 / 20%);
+}
+
+/* input styles */
+.searchbar__input {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+}
+
+.searchbar__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* search button styles */
+.searchbar__sbtn {
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding-left: var(--space-2);
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--timing),
+    color var(--timing);
+}
+
+.searchbar__sbtn:hover {
+  color: var(--color-primary-hover);
+}
+
+/* search button fluity styles */
+.searchbar__input:not(:placeholder-shown) ~ .searchbar__sbtn {
+  opacity: 1;
+  visibility: visible;
+}
