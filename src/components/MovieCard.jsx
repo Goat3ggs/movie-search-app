@@ -1,16 +1,15 @@
-export default function MovieCard() {
+export default function MovieCard({ movie }) {
   return (
-    <div className="container card-container">
-      {/* movie 1 */}
-      <a href="/link-catre-film" className="movie-card-link">
-        <div className="movie-card">
-          <img src="https://placeholder.com" alt="Movie 1 Poster" />
-          <div className="movie-info">
-            <div className="movie-title">Cosmic Frontiers</div>
-            <div className="movie-meta">2026 • Sci-Fi</div>
+    <article className="card-container">
+      <div className="movie-card">
+        <img src={movie.poster} alt={`${movie.title} poster`} />
+        <div className="movie-info">
+          <div className="movie-title">{movie.title}</div>
+          <div className="movie-meta">
+            {movie.year} • {movie.type}
           </div>
         </div>
-      </a>
-    </div>
+      </div>
+    </article>
   );
 }

@@ -1,10 +1,10 @@
-export default function ErrorMessage() {
+export default function ErrorMessage({ message }) {
   return (
-    <div class="container errors-container hidden">
-      <img src="./public/icon-stop.svg" alt="error icon" />
-      <div class="error">
-        <p class="error__title">Error</p>
-        <p class="error__message"></p>
+    <div className="container errors-container hidden">
+      <img src="/icon-stop.svg" alt="error icon" />
+      <div className="error">
+        <p className="error__title">Error</p>
+        <p className="error__message">{message}</p>
       </div>
     </div>
   );

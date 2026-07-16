@@ -1,7 +1,7 @@
 export default function SearchBar() {
   return (
     <div className="searchbar-container">
-      <form className="searchbar form">
+      <form className="searchbar">
         <input
           type="text"
           className="searchbar__input"
