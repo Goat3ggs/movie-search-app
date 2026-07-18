@@ -1,5 +1,8 @@
 .container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-mobile);
 }
 
 /* -- Searchbar Component */
@@ -85,8 +88,12 @@
 
 /* -- MovieList Component */
 .category-title {
-  text-align: center;
   margin-bottom: 30px;
+  color: var(--color-text-primary);
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-padding-mobile);
 }
 
 /* grid container styles */
@@ -101,7 +108,8 @@
 
 /* movie card styles */
 .movie-card {
-  background-color: #1f1f1f;
+  background-color: var(--color-surface-elevated);
+  color: var(--color-text-primary);
   border-radius: 8px;
   overflow: hidden;
   transition:
@@ -140,7 +148,7 @@
 
 .movie-meta {
   font-size: 0.9rem;
-  color: #a3a3a3;
+  color: var(--color-text-secondary);
 }
 
 /* -- Loading Component */
@@ -229,4 +237,24 @@
 .error__title {
   font-weight: 600;
   color: #d9636c;
+}
+
+/* -- EmptyState Component */
+
+.empty-state {
+  border: 1 solid var(--color-border);
+  background-color: var(--color-surface-elevated);
+  color: var(--color-text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: min(100%, 400px);
+  margin: auto;
+  text-align: center;
+  padding: 16px;
+  margin-top: 50px;
+  border-radius: 20px;
+  font-size: 1rem;
 }
