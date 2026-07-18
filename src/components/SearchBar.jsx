@@ -1,7 +1,7 @@
-export default function SearchBar({ value, onChange }) {
+export default function SearchBar({ value, onChange, onSubmit }) {
   return (
     <div className="searchbar-container">
-      <form className="searchbar">
+      <form className="searchbar" onSubmit={onSubmit}>
         <input
           type="text"
           className="searchbar__input"

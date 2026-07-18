@@ -34,13 +34,35 @@ function App() {
     setInputValue(event.target.value);
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    const input = inputValue.trim();
+
+    if (!input) {
+      setError("Please enter a movie title");
+      return;
+    } else {
+      setError("");
+      setSearchQuery(input);
+      setHasSearched(true);
+      setInputValue("");
+    }
+  }
+
   return (
     <>
-      <Loading />
-      <SearchBar value={inputValue} onChange={handleInputChange} />
-      <ErrorMessage message="Something went wrong." />
-      <EmptyState />
-      <MovieList movies={mockMovies} />
+      <div className="container">
+        <Loading />
+        <SearchBar
+          value={inputValue}
+          onChange={handleInputChange}
+          onSubmit={handleSubmit}
+        />
+
+        <ErrorMessage message={error} />
+        <EmptyState />
+        <MovieList movies={mockMovies} />
+      </div>
     </>
   );
 }
