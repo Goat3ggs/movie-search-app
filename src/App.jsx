@@ -29,8 +29,8 @@ function App() {
     } else {
       setError("");
       setSearchQuery(input);
+      event.currentTarget.elements.movieSearch.blur();
       setHasSearched(true);
-      setInputValue("");
     }
   }
 
@@ -45,6 +45,7 @@ function App() {
         setMovies(results);
       } catch (error) {
         setError(error.message);
+        setSearchQuery("");
       } finally {
         setIsLoading(false);
       }
@@ -98,6 +99,7 @@ function App() {
           value={inputValue}
           onChange={handleInputChange}
           onSubmit={handleSubmit}
+          isLoading={isLoading}
         />
 
         {renderContent()}

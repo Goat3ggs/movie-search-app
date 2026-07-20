@@ -1,4 +1,4 @@
-export default function SearchBar({ value, onChange, onSubmit }) {
+export default function SearchBar({ value, onChange, onSubmit, isLoading }) {
   return (
     <div className="searchbar-container">
       <form className="searchbar" onSubmit={onSubmit}>
@@ -8,9 +8,10 @@ export default function SearchBar({ value, onChange, onSubmit }) {
           placeholder="Type to search"
           value={value}
           onChange={onChange}
+          name="movieSearch"
         />
-        <button className="searchbar__sbtn" type="submit">
-          Search
+        <button className="searchbar__sbtn" type="submit" disabled={isLoading}>
+          {isLoading ? "Searching..." : "Search"}
         </button>
       </form>
     </div>
