@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieList from "./components/MovieList";
 import SearchBar from "./components/SearchBar";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import EmptyState from "./components/EmptyState";
+import { searchMovies } from "./api/movies";
 
 const mockMovies = [
   {
@@ -49,6 +50,24 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    if (!searchQuery) return;
+
+    async function fetchMovies() {
+      setIsLoading(true);
+      setError("");
+      try {
+        const results = await searchMovies(searchQuery);
+        setMovies(results);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchMovies();
+  }, [searchQuery]);
+
   return (
     <>
       <div className="container">
@@ -58,6 +77,7 @@ function App() {
           onChange={handleInputChange}
           onSubmit={handleSubmit}
         />
+        <p>Movies found: {movies.length}</p>
 
         <ErrorMessage message={error} />
         <EmptyState />
