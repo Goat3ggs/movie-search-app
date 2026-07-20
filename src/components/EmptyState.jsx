@@ -1,7 +1,7 @@
-export default function EmptyState() {
+export default function EmptyState({ message }) {
   return (
     <div className="empty-state">
-      <h2>Search for a movie</h2>
+      <h2>{message}</h2>
       <p>Enter a movie title to discover matching results.</p>
     </div>
   );

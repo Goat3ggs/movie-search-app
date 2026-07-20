@@ -6,23 +6,6 @@ import ErrorMessage from "./components/ErrorMessage";
 import EmptyState from "./components/EmptyState";
 import { searchMovies } from "./api/movies";
 
-const mockMovies = [
-  {
-    id: 1,
-    title: "Cosmic Frontiers",
-    year: "2026",
-    type: "Sci-Fi",
-    poster: "https://placehold.co/300x450/png",
-  },
-  {
-    id: 2,
-    title: "The Last Horizon",
-    year: "2024",
-    type: "Drama",
-    poster: "https://placehold.co/300x450/png",
-  },
-];
-
 function App() {
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -68,20 +51,36 @@ function App() {
     fetchMovies();
   }, [searchQuery]);
 
+  function renderContent() {
+    if (isLoading) {
+      return <Loading />;
+    }
+
+    if (error) {
+      return <ErrorMessage message={error} />;
+    }
+
+    if (!hasSearched) {
+      return <EmptyState message="Search for a movie." />;
+    }
+
+    if (movies.length === 0) {
+      return <EmptyState message="No movies found." />;
+    }
+
+    return <MovieList movies={movies} title={`Results for: ${searchQuery}`} />;
+  }
+
   return (
     <>
       <div className="container">
-        <Loading />
         <SearchBar
           value={inputValue}
           onChange={handleInputChange}
           onSubmit={handleSubmit}
         />
-        <p>Movies found: {movies.length}</p>
 
-        <ErrorMessage message={error} />
-        <EmptyState />
-        <MovieList movies={mockMovies} />
+        {renderContent()}
       </div>
     </>
   );
