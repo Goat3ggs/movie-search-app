@@ -30,3 +30,28 @@ export async function searchMovies(movieName) {
     });
   }
 }
+
+export async function getGenres() {
+  const baseUrl = "https://api.themoviedb.org/3/genre/movie/list";
+  try {
+    const token = import.meta.env.VITE_TMDB_TOKEN;
+    const options = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await fetch(baseUrl, options);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch movie genres: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.genres;
+  } catch (error) {
+    throw new Error(`Movie genre failed: ${error.message}`, {
+      cause: error,
+    });
+  }
+}
