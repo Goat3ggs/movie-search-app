@@ -4,15 +4,16 @@ import SearchBar from "./components/SearchBar";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import EmptyState from "./components/EmptyState";
-import { searchMovies } from "./api/movies";
+import { searchMovies, getGenres } from "./api/movies";
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [movies, setMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
+  const [error, setError] = useState("");
 
   function handleInputChange(event) {
     setInputValue(event.target.value);
@@ -51,6 +52,19 @@ function App() {
     fetchMovies();
   }, [searchQuery]);
 
+  useEffect(() => {
+    async function fetchGenres() {
+      try {
+        const results = await getGenres();
+        console.log(results);
+        setGenres(results);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchGenres();
+  }, []);
+
   function renderContent() {
     if (isLoading) {
       return <Loading />;
@@ -68,7 +82,13 @@ function App() {
       return <EmptyState message="No movies found." />;
     }
 
-    return <MovieList movies={movies} title={`Results for: ${searchQuery}`} />;
+    return (
+      <MovieList
+        movies={movies}
+        title={`Results for: ${searchQuery}`}
+        genres={genres}
+      />
+    );
   }
 
   return (

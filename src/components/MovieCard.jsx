@@ -1,6 +1,14 @@
-export default function MovieCard({ movie }) {
+export default function MovieCard({ movie, genres }) {
   const baseUrl = "https://image.tmdb.org/t/p/w500" + movie.poster_path;
   const replaceImg = "/poster-placeholder.svg";
+  const genreNames = movie.genre_ids.map((id) => {
+    const foundGenre = genres.find((genre) => {
+      return genre.id === id;
+    });
+    return foundGenre ? foundGenre.name : "Unknown";
+  });
+  const genre = genreNames.slice(0, 1).join(", ");
+
   return (
     <article className="card-container">
       <div className="movie-card">
@@ -16,7 +24,7 @@ export default function MovieCard({ movie }) {
             {movie.release_date
               ? movie.release_date.slice(0, 4)
               : "No release date"}{" "}
-            • {movie.genre}
+            • {genre}
           </div>
         </div>
       </div>
