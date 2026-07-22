@@ -18,16 +18,31 @@ export async function searchMovies(movieName) {
     };
     const response = await fetch(url, options);
 
+    if (response.status === 401) {
+      throw new Error(
+        "The movie service is temporarily unavailable. Please try again later.",
+      );
+    }
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch movies: ${response.status}`);
+      throw new Error(
+        "Something went wrong while loading movies. Please try again.",
+      );
     }
 
     const data = await response.json();
     return data.results;
   } catch (error) {
-    throw new Error(`Movie search failed: ${error.message}`, {
-      cause: error,
-    });
+    if (error instanceof TypeError) {
+      throw new Error(
+        "Unable to connect. Check your internet connection and try again.",
+        {
+          cause: error,
+        },
+      );
+    }
+
+    throw error;
   }
 }
 

@@ -14,11 +14,18 @@ function App() {
   const [hasSearched, setHasSearched] = useState(false);
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
-  const [error, setError] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [validationError, setValidationError] = useState("");
+  const [requestError, setRequestError] = useState("");
 
   function handleInputChange(event) {
-    setInputValue(event.target.value);
+    const value = event.target.value;
+    setInputValue(value);
+    setValidationError("");
+
+    if (value.trim() === "") {
+      setSearchQuery("");
+    }
   }
 
   function handleSubmit(event) {
@@ -26,15 +33,22 @@ function App() {
     const input = inputValue.trim();
 
     if (!input) {
-      setError("Please enter a movie title");
+      setValidationError("Please enter a movie title");
       return;
-    } else {
-      setError("");
-      setSelectedMovie(null);
-      setSearchQuery(input);
-      event.currentTarget.elements.movieSearch.blur();
-      setHasSearched(true);
     }
+
+    if (input.length < 3) {
+      setValidationError("Please enter at least 3 characters.");
+      return;
+    }
+
+    setValidationError("");
+    setRequestError("");
+    setSelectedMovie(null);
+    setSearchQuery(input);
+    setHasSearched(true);
+
+    event.currentTarget.elements.movieSearch.blur();
   }
 
   function handleClickedMovie(movie) {
@@ -50,12 +64,12 @@ function App() {
 
     async function fetchMovies() {
       setIsLoading(true);
-      setError("");
+      setRequestError("");
       try {
         const results = await searchMovies(searchQuery);
         setMovies(results);
       } catch (error) {
-        setError(error.message);
+        setRequestError(error.message);
         setSearchQuery("");
       } finally {
         setIsLoading(false);
@@ -76,13 +90,36 @@ function App() {
     fetchGenres();
   }, []);
 
+  useEffect(() => {
+    const input = inputValue.trim();
+    if (input === "") {
+      return;
+    }
+
+    if (input.length < 3) {
+      return;
+    }
+
+    const debounceTyping = setTimeout(() => {
+      setValidationError("");
+      setRequestError("");
+      setSelectedMovie(null);
+      setHasSearched(true);
+      setSearchQuery(input);
+    }, 600);
+
+    return () => {
+      clearTimeout(debounceTyping);
+    };
+  }, [inputValue]);
+
   function renderContent() {
     if (isLoading) {
       return <Loading />;
     }
 
-    if (error) {
-      return <ErrorMessage message={error} />;
+    if (requestError) {
+      return <ErrorMessage message={requestError} />;
     }
 
     if (selectedMovie) {
@@ -116,6 +153,8 @@ function App() {
           onSubmit={handleSubmit}
           isLoading={isLoading}
         />
+
+        {validationError && <ErrorMessage message={validationError} />}
 
         {renderContent()}
       </div>
