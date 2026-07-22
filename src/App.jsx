@@ -5,6 +5,7 @@ import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import EmptyState from "./components/EmptyState";
 import { searchMovies, getGenres } from "./api/movies";
+import MovieDetails from "./components/MovieDetails";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +15,7 @@ function App() {
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [error, setError] = useState("");
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   function handleInputChange(event) {
     setInputValue(event.target.value);
@@ -28,10 +30,19 @@ function App() {
       return;
     } else {
       setError("");
+      setSelectedMovie(null);
       setSearchQuery(input);
       event.currentTarget.elements.movieSearch.blur();
       setHasSearched(true);
     }
+  }
+
+  function handleClickedMovie(movie) {
+    setSelectedMovie(movie);
+  }
+
+  function handleBack() {
+    setSelectedMovie(null);
   }
 
   useEffect(() => {
@@ -57,7 +68,6 @@ function App() {
     async function fetchGenres() {
       try {
         const results = await getGenres();
-        console.log(results);
         setGenres(results);
       } catch (error) {
         console.log(error.message);
@@ -75,6 +85,10 @@ function App() {
       return <ErrorMessage message={error} />;
     }
 
+    if (selectedMovie) {
+      return <MovieDetails movie={selectedMovie} onBack={handleBack} />;
+    }
+
     if (!hasSearched) {
       return <EmptyState message="Search for a movie." />;
     }
@@ -88,6 +102,7 @@ function App() {
         movies={movies}
         title={`Results for: ${searchQuery}`}
         genres={genres}
+        handleClickedMovie={handleClickedMovie}
       />
     );
   }

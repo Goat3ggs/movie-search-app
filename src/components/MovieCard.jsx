@@ -1,4 +1,4 @@
-export default function MovieCard({ movie, genres }) {
+export default function MovieCard({ movie, genres, handleClickedMovie }) {
   const baseUrl = "https://image.tmdb.org/t/p/w500" + movie.poster_path;
   const replaceImg = "/poster-placeholder.svg";
   const genreNames = movie.genre_ids.map((id) => {
@@ -10,7 +10,10 @@ export default function MovieCard({ movie, genres }) {
   const genre = genreNames.slice(0, 1).join(", ");
 
   return (
-    <article className="card-container">
+    <article
+      className="card-container"
+      onClick={() => handleClickedMovie(movie)}
+    >
       <div className="movie-card">
         <img
           src={movie.poster_path ? baseUrl : replaceImg}
