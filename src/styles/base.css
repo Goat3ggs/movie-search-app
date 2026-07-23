@@ -1,6 +1,6 @@
 :root {
   /* Colors */
-  --color-bg: #0f1115;
+  --color-bg: #0c0e11;
   --color-surface: #171a21;
   --color-surface-elevated: #1f2430;
   --color-border: #2b3240;
@@ -67,12 +67,12 @@
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.25);
-  --shadow-md: 0 8px 24px rgb(0 0 0 / 0.3);
+  --shadow-md: 0 10px 20px rgb(0 0 0 / 0.5);
   --shadow-lg: 0 16px 40px rgb(0 0 0 / 0.4);
 
   /* Transitions */
   --transition-fast: 150ms ease;
-  --transition-normal: 250ms ease;
+  --transition-normal: 300ms ease;
   --transition-slow: 400ms ease;
 
   /* Z-index */
@@ -102,7 +102,10 @@
 }
 
 body {
+  min-height: 100vh;
   font-family: var(--font-family-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
   /* 4. Increase line-height */
   line-height: 1.5;
   /* 5. Improve text rendering */
@@ -156,6 +159,7 @@ h6 {
 */
 #root,
 #__next {
+  min-height: 100vh;
   isolation: isolate;
 }
 

@@ -12,7 +12,16 @@ export default function MovieCard({ movie, genres, handleClickedMovie }) {
   return (
     <article
       className="card-container"
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${movie.title ? movie.title : "Untitled movie"}`}
       onClick={() => handleClickedMovie(movie)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          handleClickedMovie(movie);
+        }
+      }}
     >
       <div className="movie-card">
         <img
