@@ -70,6 +70,8 @@ Append the new movies to the existing list
 
 The existing list remains visible while later pages are loading.
 
+---
+
 ## Tech Stack
 
 - React
@@ -126,7 +128,6 @@ src/
 
 ---
 
-````md
 ## Component Responsibilities
 
 ### `App`
@@ -314,14 +315,13 @@ Production URL: `<ADD_DEPLOYED_URL>`
 
 ## Author
 
-`<Stefania_Grigore>`
+**Stefania Grifore**
 
-- GitHub: `<Goat3ggs>`
-- LinkedIn: `[Grigore Stefania](www.linkedin.com/in/grigore-any-mary-stefania)`
+- GitHub: <Goat3ggs>
+- LinkedIn: [Grigore Stefania](www.linkedin.com/in/grigore-any-mary-stefania)
 
 ---
 
 ## License
 
 This project was created for educational purposes.
-````
