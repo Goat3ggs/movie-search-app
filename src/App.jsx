@@ -1,22 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import MovieList from "./components/MovieList";
 import SearchBar from "./components/SearchBar";
 import Loading from "./components/Loading";
 import ErrorMessage from "./components/ErrorMessage";
 import EmptyState from "./components/EmptyState";
-import { searchMovies, getGenres } from "./api/movies";
+import { searchMovies, getGenres, discoverMovies } from "./api/movies";
 import MovieDetails from "./components/MovieDetails";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [hasSearched, setHasSearched] = useState(false);
   const [movies, setMovies] = useState([]);
   const [genres, setGenres] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [viewMode, setViewMode] = useState("home");
   const [validationError, setValidationError] = useState("");
   const [requestError, setRequestError] = useState("");
+  const loadMoreRef = useRef(null);
 
   function handleInputChange(event) {
     const value = event.target.value;
@@ -45,8 +48,9 @@ function App() {
     setValidationError("");
     setRequestError("");
     setSelectedMovie(null);
+    setViewMode("search");
+    setPage(1);
     setSearchQuery(input);
-    setHasSearched(true);
 
     event.currentTarget.elements.movieSearch.blur();
   }
@@ -60,23 +64,60 @@ function App() {
   }
 
   useEffect(() => {
-    if (!searchQuery) return;
+    if (viewMode !== "home") return;
+
+    async function fetchDiscoveredMovies() {
+      setIsLoading(true);
+      setRequestError("");
+
+      try {
+        const data = await discoverMovies(page);
+
+        setMovies((currentMovies) => {
+          if (page === 1) {
+            return data.results;
+          }
+
+          return [...currentMovies, ...data.results];
+        });
+
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        setRequestError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchDiscoveredMovies();
+  }, [page, viewMode]);
+
+  useEffect(() => {
+    if (!searchQuery || viewMode !== "search") return;
 
     async function fetchMovies() {
       setIsLoading(true);
       setRequestError("");
+
       try {
-        const results = await searchMovies(searchQuery);
-        setMovies(results);
+        const data = await searchMovies(searchQuery, page);
+
+        setMovies((currentMovies) => {
+          if (page === 1) {
+            return data.results;
+          }
+          return [...currentMovies, ...data.results];
+        });
+
+        setTotalPages(data.totalPages);
       } catch (error) {
         setRequestError(error.message);
-        setSearchQuery("");
       } finally {
         setIsLoading(false);
       }
     }
     fetchMovies();
-  }, [searchQuery]);
+  }, [searchQuery, page, viewMode]);
 
   useEffect(() => {
     async function fetchGenres() {
@@ -84,7 +125,7 @@ function App() {
         const results = await getGenres();
         setGenres(results);
       } catch (error) {
-        console.log(error.message);
+        setRequestError(error.message);
       }
     }
     fetchGenres();
@@ -104,7 +145,8 @@ function App() {
       setValidationError("");
       setRequestError("");
       setSelectedMovie(null);
-      setHasSearched(true);
+      setViewMode("search");
+      setPage(1);
       setSearchQuery(input);
     }, 600);
 
@@ -113,8 +155,41 @@ function App() {
     };
   }, [inputValue]);
 
+  useEffect(() => {
+    const loadMoreElement = loadMoreRef.current;
+
+    if (!loadMoreElement || isLoading || page >= totalPages || selectedMovie) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const firstEntry = entries[0];
+
+        if (firstEntry.isIntersecting) {
+          observer.disconnect();
+
+          setPage((currentPage) => {
+            return currentPage + 1;
+          });
+        }
+      },
+      {
+        root: null,
+        rootMargin: "200px",
+        threshold: 0,
+      },
+    );
+
+    observer.observe(loadMoreElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isLoading, page, totalPages, selectedMovie]);
+
   function renderContent() {
-    if (isLoading) {
+    if (isLoading && page === 1) {
       return <Loading />;
     }
 
@@ -126,21 +201,36 @@ function App() {
       return <MovieDetails movie={selectedMovie} onBack={handleBack} />;
     }
 
-    if (!hasSearched) {
-      return <EmptyState message="Search for a movie." />;
+    if (movies.length === 0) {
+      const message =
+        viewMode === "home" ? "No movies available." : "No movies found.";
+      return <EmptyState message={message} />;
     }
 
-    if (movies.length === 0) {
-      return <EmptyState message="No movies found." />;
-    }
+    const listTitle =
+      viewMode === "home" ? "Popular Movies" : `Results for: ${searchQuery}`;
 
     return (
-      <MovieList
-        movies={movies}
-        title={`Results for: ${searchQuery}`}
-        genres={genres}
-        handleClickedMovie={handleClickedMovie}
-      />
+      <>
+        <MovieList
+          movies={movies}
+          title={listTitle}
+          genres={genres}
+          handleClickedMovie={handleClickedMovie}
+        />
+
+        <div
+          ref={loadMoreRef}
+          className="load-more-sentinel"
+          aria-hidden="true"
+        />
+
+        {isLoading && page > 1 && (
+          <p className="load-more-status" role="status">
+            Loading more movies...
+          </p>
+        )}
+      </>
     );
   }
 
