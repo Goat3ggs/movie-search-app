@@ -315,9 +315,9 @@ Production URL: `<ADD_DEPLOYED_URL>`
 
 ## Author
 
-**Stefania Grifore**
+**Stefania Grigore**
 
-- GitHub: <Goat3ggs>
+- GitHub: Goat3ggs
 - LinkedIn: [Grigore Stefania](www.linkedin.com/in/grigore-any-mary-stefania)
 
 ---
