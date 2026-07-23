@@ -6,6 +6,7 @@ import ErrorMessage from "./components/ErrorMessage";
 import EmptyState from "./components/EmptyState";
 import { searchMovies, getGenres, discoverMovies } from "./api/movies";
 import MovieDetails from "./components/MovieDetails";
+import BackToTop from "./components/BackToTop";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +62,28 @@ function App() {
 
   function handleBack() {
     setSelectedMovie(null);
+  }
+
+  function handleHome() {
+    const needsHomeReload = viewMode !== "home" || page !== 1;
+
+    setInputValue("");
+    setSearchQuery("");
+    setSelectedMovie(null);
+    setValidationError("");
+    setRequestError("");
+
+    if (needsHomeReload) {
+      setMovies([]);
+      setIsLoading(true);
+      setViewMode("home");
+      setPage(1);
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 
   useEffect(() => {
@@ -242,12 +265,15 @@ function App() {
           onChange={handleInputChange}
           onSubmit={handleSubmit}
           isLoading={isLoading}
+          onHome={handleHome}
         />
 
         {validationError && <ErrorMessage message={validationError} />}
 
         {renderContent()}
       </div>
+
+      <BackToTop />
     </>
   );
 }

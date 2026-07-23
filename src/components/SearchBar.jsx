@@ -1,8 +1,19 @@
-export default function SearchBar({ value, onChange, onSubmit, isLoading }) {
+export default function SearchBar({
+  value,
+  onChange,
+  onSubmit,
+  isLoading,
+  onHome,
+}) {
   return (
     <header className="searchbar-container">
       <div className="navbar">
-        <div className="navbar__brand">
+        <button
+          className="navbar__brand"
+          type="button"
+          onClick={onHome}
+          aria-label="Go to home page"
+        >
           <div className="navbar__brand-copy">
             <span className="navbar__title">
               Movie<span>Search</span>
@@ -10,7 +21,7 @@ export default function SearchBar({ value, onChange, onSubmit, isLoading }) {
 
             <span className="navbar__subtitle">Discover your next movie</span>
           </div>
-        </div>
+        </button>
 
         <form
           className="searchbar"
