@@ -8,7 +8,7 @@ Built as the Week 3 project from a 12-week frontend practice roadmap, with a foc
 
 ## Demo
 
-[Live Demo]()
+[Live Demo](https://movie-search-app-iota-orcin.vercel.app/)
 
 ## Preview
 
@@ -303,7 +303,7 @@ During this project, I practiced:
 
 Platform: Vercel
 
-Production URL: `<ADD_DEPLOYED_URL>`
+Production URL: [MovieSearch](https://movie-search-app-iota-orcin.vercel.app/)
 
 ---
 
