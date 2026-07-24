@@ -318,7 +318,7 @@ Production URL: `<ADD_DEPLOYED_URL>`
 **Stefania Grigore**
 
 - GitHub: Goat3ggs
-- LinkedIn: [Grigore Stefania](https://www.linkedin.com/in/grigore-any-mary-stefania/)
+- LinkedIn: [Grigore Stefania](https://www.linkedin.com/in/grigore-any-mary-stefania)
 
 ---
 
